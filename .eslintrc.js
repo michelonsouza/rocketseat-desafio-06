@@ -11,6 +11,7 @@ module.exports = {
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',
+    __DEV__: true,
   },
   parser: 'babel-eslint',
   parserOptions: {
@@ -30,7 +31,13 @@ module.exports = {
     'react/jsx-filename-extension': [
       'warn',
       {
-        extensions: ['.jsx', '.js']
+        extensions: ['.jsx', '.js'],
+      },
+    ],
+    'no-console': [
+      'error',
+      {
+        allow: ['tron']
       }
     ]
   },
