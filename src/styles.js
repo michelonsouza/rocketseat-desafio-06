@@ -4,5 +4,10 @@ export const colors = {
   light: '#eee',
   lighten: '#999',
 
-  primary: '#7159c1',
+  primary: '#ff5722',
+};
+
+export const padding = {
+  itemPadding: '10px',
+  containerPadding: '30px',
 };

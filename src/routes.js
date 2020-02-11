@@ -1,6 +1,8 @@
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 
+import { colors } from './styles';
+
 import Main from './screens/Main';
 import User from './screens/User';
 
@@ -15,7 +17,7 @@ const Routes = createAppContainer(
       headerBackTitleVIsible: false,
       defaultNavigationOptions: {
         headerStyle: {
-          backgroundColor: '#7159c1',
+          backgroundColor: colors.primary,
         },
         headerTintColor: '#fff',
       },
