@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
-import { ActivityIndicator, Keyboard } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { ActivityIndicator, Alert, Keyboard } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import PropTypes from 'prop-types';
 
 import api from '../../services/api';
 import { colors } from '../../styles';
 import {
-  Container,
   Form,
   Input,
   SubmitButton,
@@ -17,11 +18,32 @@ import {
   ProfileButton,
   ProfileButtonText,
 } from './styles';
+import Container from '../../components/Container';
 
-export default function Main() {
+export default function Main({ navigation }) {
   const [users, setUsers] = useState([]);
   const [newUser, setNewUser] = useState('');
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    async function loadData() {
+      const data = await AsyncStorage.getItem('@GithubUsers:users');
+
+      if (data) {
+        setUsers(JSON.parse(data));
+      }
+    }
+
+    loadData();
+  }, []);
+
+  useEffect(() => {
+    AsyncStorage.setItem('@GithubUsers:users', JSON.stringify(users));
+  }, [users]);
+
+  function handleNavigate(user) {
+    navigation.navigate('User', { user });
+  }
 
   async function handleAddUser() {
     setLoading(true);
@@ -36,12 +58,17 @@ export default function Main() {
         avatar: response.avatar_url,
       };
 
-      setUsers([...users, data]);
+      const newUsers = [
+        ...users.filter(user => user.login !== data.login),
+        data,
+      ];
+
+      setUsers(newUsers);
       setNewUser('');
 
       Keyboard.dismiss();
     } catch (error) {
-      console.tron.error(error);
+      Alert.alert('Usuário não encontrado');
     }
 
     setLoading(false);
@@ -59,7 +86,7 @@ export default function Main() {
           onSubmitEditing={handleAddUser}
           returnKeyType="send"
         />
-        <SubmitButton onPress={handleAddUser}>
+        <SubmitButton onPress={handleAddUser} loading={loading}>
           {loading ? (
             <ActivityIndicator color={colors.white} size="small" />
           ) : (
@@ -77,7 +104,7 @@ export default function Main() {
             <Name>{item.name}</Name>
             <Bio>{item.bio}</Bio>
 
-            <ProfileButton onPress={() => {}}>
+            <ProfileButton onPress={() => handleNavigate(item)}>
               <ProfileButtonText>Ver Perfil</ProfileButtonText>
             </ProfileButton>
           </User>
@@ -86,6 +113,12 @@ export default function Main() {
     </Container>
   );
 }
+
+Main.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+  }).isRequired,
+};
 
 Main.navigationOptions = {
   title: 'Usuários',
