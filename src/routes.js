@@ -18,6 +18,7 @@ const Routes = createAppContainer(
       headerTitleAlign: 'center',
       defaultNavigationOptions: {
         headerBackTitleVisible: false,
+        headerTitleAlign: 'center',
         headerLeftContainerStyle: {
           color: colors.white,
         },
