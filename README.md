@@ -44,5 +44,18 @@
   <li><a target="blank" rel="noopener noreferrer" href="https://github.com/react-native-community/async-storage">async-storage</a></li>
 </ul>
 
+<h3>👀 Demonstração de usabilidade da aplicação:</h3>
+
+<table border="0" collapse="collapse">
+  <tr>
+    <td>
+      <img src="/.github/android-record.gif" width="300" />
+    </td>
+    <td>
+      <img src="/.github/ios-record.gif" width="300" />
+    </td>
+  </tr>
+</table>
+
 <hr />
 <h3 align="center">Made with 🖤 by Michelon Souza</h3>
