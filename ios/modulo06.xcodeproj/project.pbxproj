@@ -194,7 +194,6 @@
 				DADDF2A60E2D12D1B0A49124 /* Pods-modulo06Tests.debug.xcconfig */,
 				2464405D5FE32AC5D9ECC9A3 /* Pods-modulo06Tests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -309,6 +308,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -684,7 +684,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.modulo06;
 				PRODUCT_NAME = modulo06;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -703,7 +703,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.modulo06;
 				PRODUCT_NAME = modulo06;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
