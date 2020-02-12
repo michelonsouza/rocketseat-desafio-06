@@ -25,6 +25,7 @@ export default function User({ navigation }) {
   const [stars, setStars] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [loadMoreStars, setLoadMoreStars] = useState(true);
   const [page, setPage] = useState(1);
 
   useEffect(() => {
@@ -40,17 +41,38 @@ export default function User({ navigation }) {
     loadStars();
   }, []);
 
-  async function loadData(refresh = false) {
-    if (refresh) {
-      setRefreshing(true);
+  async function loadMore() {
+    try {
+      const { data: response } = await api.get(
+        `/users/${user.login}/starred?page=${page + 1}`,
+      );
+
+      setStars([...stars, ...response]);
+      setPage(page + 1);
+      if (!response.length) {
+        setLoadMoreStars(false);
+      }
+    } catch (error) {
+      console.tron.error(error);
+    }
+  }
+
+  async function loadData() {
+    setRefreshing(true);
+
+    try {
+      if (stars.length % 30 === 0) {
+        const { data: response } = await api.get(
+          `/users/${user.login}/starred?page=${1}`,
+        );
+
+        setStars(response);
+        setPage(1);
+      }
+    } catch (error) {
+      console.tron.error(error);
     }
 
-    const { data: response } = await api.get(
-      `/users/${user.login}/starred?page=${refresh ? 1 : page + 1}`,
-    );
-
-    setStars(refresh ? response : [...stars, ...response]);
-    setPage(refresh ? 1 : page + 1);
     setRefreshing(false);
   }
 
@@ -66,6 +88,10 @@ export default function User({ navigation }) {
         </Info>
       </Starred>
     );
+  }
+
+  function renderFooter() {
+    return loadMoreStars && <ActivityIndicator size="large" color={colors.darken} />;
   }
   /* eslint-enable */
 
@@ -90,12 +116,10 @@ export default function User({ navigation }) {
         keyExtractor={star => String(star.id)}
         renderItem={renderStarred}
         onEndReachedThreshold={0.2}
-        onEndReached={() => loadData()}
+        onEndReached={() => loadMore()}
         refreshing={refreshing}
-        onRefresh={() => loadData(true)}
-        ListFooterComponent={
-          <ActivityIndicator size="large" color={colors.darken} />
-        }
+        onRefresh={() => loadData()}
+        ListFooterComponent={() => renderFooter()}
       />
     </Container>
   );
